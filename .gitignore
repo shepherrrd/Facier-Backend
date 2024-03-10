@@ -1,0 +1,5 @@
+.vs/
+AttendanceCapture/bin/
+AttendanceCapture/obj/
+AttendanceCapture/appsettings.Development.json
+AttendanceCapture/appsettings.json
