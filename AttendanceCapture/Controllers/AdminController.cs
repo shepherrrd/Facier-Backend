@@ -52,8 +52,9 @@ namespace AttendanceCapture.Controllers
             return Ok(response);
 
         }
+
         [HttpPost("[action]")]
-        public async Task<IActionResult> AssignLecturerToClass([FromBody] AssignLecturerToClassRequest request)
+        public async Task<IActionResult> ViewLogs([FromBody]VIewLogsRequest request)
         {
             var response = await _sender.Send(request);
             if (!response.Status)
@@ -63,7 +64,27 @@ namespace AttendanceCapture.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> ViewLogs([FromBody]VIewLogsRequest request)
+        public async Task<IActionResult> VIewAllClasses([FromBody]ViewAllClassesAdminRequest request)
+        {
+            var response = await _sender.Send(request);
+            if (!response.Status)
+                return BadRequest(response);
+            return Ok(response);
+
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ViewAllStudents([FromBody]ViewAllStudentsRequest request)
+        {
+            var response = await _sender.Send(request);
+            if (!response.Status)
+                return BadRequest(response);
+            return Ok(response);
+
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ViewAllLecturers([FromBody]ViewAllLecturersRequest request)
         {
             var response = await _sender.Send(request);
             if (!response.Status)

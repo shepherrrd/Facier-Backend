@@ -30,25 +30,12 @@ public class LecturTutor : BaseEntity
     public long UserId { get; set; }
 }
 
-public class Faculty : BaseEntity
-{
-    public string? Name { get; set; } // Add other faculty properties as required
-
-    // Use a string for the collection navigation property I
-
-    // Navigation properties
-    public string? Departments { get; set; }
-}
 
 public class Department : BaseEntity
 {
     public string? Name { get; set; } // Add other department properties as required
 
     // Explicit foreign key property
-    public int? FacultyId { get; set; }
-
-    // Navigation properties
-    public long? FacultyID { get; set; }
     public string? Lecturers { get; set; }
 }
 
@@ -59,13 +46,12 @@ public class LogActivity : BaseEntity
 }
 public class Class : BaseEntity
 {
-    public string? Name { get; set; } // Add other class properties as required
 
     // Use a string for the collection navigation property ID
     public string? StudentIds { get; set; }
 
     public string? ClassNumber { get; set; }
-    public long LecturerID { get; set; }
+    public long? DepartmentID { get; set; }
 
 }
 
@@ -74,7 +60,7 @@ public class Student : BaseEntity
     public string? Name { get; set; } // Add other student properties as required
 
     // Explicit foreign key property
-    public int? ClassId { get; set; }
+    public long? ClassId { get; set; }
     public string MatricNumber { get; set; } = string.Empty;
     public string? Attendances { get; set; }
 
@@ -83,9 +69,12 @@ public class Student : BaseEntity
 
 public class Course : BaseEntity
 {
-    public string? Name { get; set; } 
-    public long? LectureriD { get; set; }
+    public string? Title { get; set; } 
+    public long? LecturerID { get; set; }
     public long? DepartmentID { get; set; }
+    public string? CourseCode { get; set; }
+    public string? Level { get; set; }
+    public long? ClassId { get; set; }
 }
 
 public class Attendance : BaseEntity
@@ -110,6 +99,21 @@ public class DBSessions : BaseEntity
 
     public DateTimeOffset ExpiresAt { get; set; }
 
+
+}
+
+public class LoginResponse
+{
+    public DBSessions Session { get; set; } = default!;
+    public UserResponse User { get; set; } = default!;
+
+}
+public class UserResponse
+{
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
+    public string Email { get; set; } = default!;
+    public string UserName { get; set; } = default!;
 }
 public class User : IdentityUser<long> { 
 

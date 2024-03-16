@@ -24,17 +24,9 @@ public class RegisterStudentRequestValidator : AbstractValidator<RegisterStudent
         RuleFor(x => x.Name).NotNull().NotEmpty();
         RuleFor(x => x.MatricNumber).NotNull().NotEmpty();
         RuleFor(x => x.Passport).NotNull().NotEmpty();
-        RuleFor(x => x.Passport).Must(BeValidFileType).WithMessage(" Passport Files must be either JPEG or pdf.");
     }
 
-    private bool BeValidFileType(IFormFile file)
-    {
-        if (file == null) return true; // Assuming files are optional. If mandatory, return false.
-
-        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-        var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        return allowedExtensions.Contains(fileExtension);
-    }
+   
 }
 
 public class RegisterStudentRequestHandler : IRequestHandler<RegisterStudentRequest, BaseResponse>
@@ -66,7 +58,9 @@ public class RegisterStudentRequestHandler : IRequestHandler<RegisterStudentRequ
             var classe = await _context.Classes.FirstOrDefaultAsync(x => x.Id == request.ClassId,cancellationToken);
             if (classe is null)
                 return new BaseResponse(false, "This Class DOes Not exist");
-
+            var existings = await _context.Students.AsNoTracking().Select(x => new { x.MatricNumber }).FirstOrDefaultAsync(x => x.MatricNumber == request.MatricNumber, cancellationToken);
+            if (existings is not null)
+                return new BaseResponse(false, "Student With Matric Number already exists");
             var student = new Student
             {
                 Name = request.Name,
@@ -76,6 +70,7 @@ public class RegisterStudentRequestHandler : IRequestHandler<RegisterStudentRequ
                 TimeUpdated = DateTimeOffset.UtcNow
 
             };
+            classe.StudentIds += $"{request.ClassId};";
             var stream = new MemoryStream();
             using (var pic = request.Passport!.OpenReadStream())
             {

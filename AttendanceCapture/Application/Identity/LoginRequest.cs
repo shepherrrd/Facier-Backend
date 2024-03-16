@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceCapture.Application.Identity;
 
-public class LoginRequest : IRequest<BaseResponse<DBSessions>>
+public class LoginRequest : IRequest<BaseResponse<LoginResponse>>
 {
     public string UserName { get; set; } = default!;
     public string Password { get; set; } = default!;
@@ -24,7 +24,7 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
 }
 
 
-public class LoginRequestHandler : IRequestHandler<LoginRequest, BaseResponse<DBSessions>>
+public class LoginRequestHandler : IRequestHandler<LoginRequest, BaseResponse<LoginResponse>>
 {
     private readonly UniversityContext _context;
     private SignInManager<User> _signinManager;
@@ -37,16 +37,23 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, BaseResponse<DB
     }
 
     
-    public async Task<BaseResponse<DBSessions>> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<LoginResponse>> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         try
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName, cancellationToken);
             if (user is null)
-                return new BaseResponse<DBSessions>(false, "Invalid Username or passowrd");
+                return new BaseResponse<LoginResponse>(false, "Invalid Username or passowrd");
             var signing = await _signinManager.PasswordSignInAsync(user, request.Password, true, true);
             if(!signing.Succeeded)
-                return new BaseResponse<DBSessions>(false, "Invalid Username or passowrd");
+                return new BaseResponse<LoginResponse>(false, "Invalid Username or passowrd");
+            var userr = new UserResponse
+             {
+                 FirstName = user.FirstName,
+                 LastName = user.LastName,
+                 Email = user.Email!,
+                 UserName = user.UserName!
+             };
             var session = new DBSessions
             {
                 SessionKey = Guid.NewGuid(),
@@ -56,6 +63,11 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, BaseResponse<DB
                 UserType = user.UserType,
                 ExpiresAt = DateTimeOffset.UtcNow.AddHours(3),
 
+            };
+            var lgrp = new LoginResponse
+            {
+                Session = session,
+                User = userr
             };
             var log = new LogActivity
             {
@@ -68,12 +80,12 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, BaseResponse<DB
             await _context.AddAsync(session,cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<DBSessions>(true, "Signing Successfull", session);
+            return new BaseResponse<LoginResponse>(true, "Signing Successfull", lgrp);
 
         }
         catch (Exception)
         {
-            return new BaseResponse<DBSessions>(false, "An Error Occured WHile trying to Sign You In");
+            return new BaseResponse<LoginResponse>(false, "An Error Occured WHile trying to Sign You In");
         }
     }
 }

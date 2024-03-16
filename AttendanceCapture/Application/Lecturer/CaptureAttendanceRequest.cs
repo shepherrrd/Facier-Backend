@@ -1,8 +1,6 @@
 ﻿using AttendanceCapture.Models;
 using AttendanceCapture.Persistence;
 using AttendanceCapture.Services.Interfaces;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -71,7 +69,6 @@ public class CaptureAttendanceRequestHandler : IRequestHandler<CaptureAttendance
             byte[] imageBytes = Convert.FromBase64String(base64String.Message!);
             string tempFilePath = Path.GetTempFileName(); // Create a temporary file
             File.WriteAllBytes(tempFilePath, imageBytes);
-            Mat studentimage = CvInvoke.Imread(tempFilePath, ImreadModes.Color);
            
             string tempFilePath2 = Path.GetTempFileName(); // Create a temporary file
 
@@ -80,9 +77,7 @@ public class CaptureAttendanceRequestHandler : IRequestHandler<CaptureAttendance
             stream.Position = 0;
             stream.Dispose();
 
-            Mat attendanceimage = CvInvoke.Imread(tempFilePath2, ImreadModes.Color);
-
-            var att = _attendance.VerifyImageMatch(studentimage, attendanceimage);
+            var att = _attendance.VerifyImageMatch(tempFilePath, tempFilePath2);
             if (!att.Status) return new BaseResponse(false, "Faces DO Not Match");
 
             var attendance = new Attendance

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\csharp\AttendanceCapture\AttendanceCapture\bin\Release\net8.0\publish\new</_PublishTargetUrl>
+    <History>True|2024-03-16T07:07:39.8897251Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

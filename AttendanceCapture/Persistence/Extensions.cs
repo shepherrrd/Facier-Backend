@@ -98,6 +98,40 @@ public static class Extensions
                 UserType = UserType.Admin
             }
         );
+        modelBuilder.Entity<Department>().HasData(new Department
+        {
+            Id = 1,
+            Name = "Software Engineering",
+            Lecturers = ";1;",
+            TimeCreated = DateTimeOffset.UtcNow,
+            TimeUpdated = DateTimeOffset.UtcNow,
+        });
+        modelBuilder.Entity<Department>().HasData(new Department
+        {
+            Id = 2,
+            Name = "Computer Science",
+            Lecturers = ";1;",
+            TimeCreated = DateTimeOffset.UtcNow,
+            TimeUpdated = DateTimeOffset.UtcNow,
+        });
+        modelBuilder.Entity<Department>().HasData(new Department
+        {
+            Id = 3,
+            Name = "Computer Technology",
+            Lecturers = ";1;",
+            TimeCreated = DateTimeOffset.UtcNow,
+            TimeUpdated = DateTimeOffset.UtcNow,
+        });
+        modelBuilder.Entity<Class>().HasData(new Class
+        {
+            Id = 1,
+            ClassNumber = "SE400",
+            DepartmentID = 1,
+            StudentIds = ";",
+            TimeCreated = DateTimeOffset.UtcNow,
+            TimeUpdated = DateTimeOffset.UtcNow,
+            
+        }) ;
     }
     private static readonly Func<string> GenerateSecurityStamp = () =>
     {

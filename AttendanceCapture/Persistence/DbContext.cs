@@ -11,7 +11,6 @@ public class UniversityContext : IdentityDbContext<User, ApplicationRole, long>
     }
     public DbSet<User> SystemUsers { get; set; }
     public DbSet<LecturTutor> Lecturers { get; set; }
-    public DbSet<Faculty> Faculties { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Class> Classes { get; set; }
     public DbSet<Student> Students { get; set; }

@@ -25,7 +25,7 @@ namespace AttendanceCapture.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateClass([FromBody]CreateClassRequest request)
+        public async Task<IActionResult> CreateCourse([FromBody]CreateCourseRequest request)
         {
             var response = await _sender.Send(request);
             if(!response.Status)
@@ -52,7 +52,7 @@ namespace AttendanceCapture.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> ViewAllClasses([FromForm]ViewAllCLassesRequest request)
+        public async Task<IActionResult> ViewAllClasses([FromForm]ViewAllCoursesRequest request)
         {
             var response = await _sender.Send(request);
             if(!response.Status)
@@ -61,7 +61,7 @@ namespace AttendanceCapture.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> ViewCLassByID([FromForm]ViewClassByIDRequest request)
+        public async Task<IActionResult> ViewCLassByID([FromForm]ViewCourseByIDRequest request)
         {
             var response = await _sender.Send(request);
             if(!response.Status)

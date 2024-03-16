@@ -6,28 +6,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceCapture.Application.Lecturer;
 
-public class CreateClassRequest : IRequest<BaseResponse>
+public class CreateCourseRequest : IRequest<BaseResponse>
 {
     public Guid SessionKey { get; set; }
 
-    public string Name { get; set; } = default!;
-
-    public string ClassNumber { get; set; } = default(string)!;
+    public string Title { get; set; } = default!;
+    public string Level { get; set; } = default!;
+    public string CourseCode { get; set; } = default!;
+    public long DepartmentID { get; set; }
+    public long ClassID { get; set; }
+    public long LecturerID { get; set; }
 }
 
 
-public class CreateClassRequestValidator : AbstractValidator<CreateClassRequest>
+public class CreateClassRequestValidator : AbstractValidator<CreateCourseRequest>
 {
     public CreateClassRequestValidator()
     {
-          RuleFor(x => x.Name).NotNull().NotEmpty();
+          RuleFor(x => x.ClassID).NotNull().NotEmpty();
           RuleFor(x => x.SessionKey).NotNull().NotEmpty();
-          RuleFor(x => x.ClassNumber).NotNull().NotEmpty();
+          RuleFor(x => x.Title).NotNull().NotEmpty();
+          RuleFor(x => x.Level).NotNull().NotEmpty();
+          RuleFor(x => x.LecturerID).NotNull().NotEmpty();
+          RuleFor(x => x.DepartmentID).NotNull().NotEmpty();
     }
 }
 
 
-public class CreateClassRequestHandler : IRequestHandler<CreateClassRequest, BaseResponse>
+public class CreateClassRequestHandler : IRequestHandler<CreateCourseRequest, BaseResponse>
 {
     private readonly UniversityContext _context;
 
@@ -36,7 +42,7 @@ public class CreateClassRequestHandler : IRequestHandler<CreateClassRequest, Bas
         _context = context;
     }
 
-    public async Task<BaseResponse> Handle(CreateClassRequest request, CancellationToken cancellationToken)
+    public async Task<BaseResponse> Handle(CreateCourseRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -50,14 +56,19 @@ public class CreateClassRequestHandler : IRequestHandler<CreateClassRequest, Bas
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == session.UserID && x.UserType == Infrastructure.UserType.Lecturer, cancellationToken);
             if (user is null)
                 return new BaseResponse(false, "The User tied to this session was not found");
-
-            var classe = new Class
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.Id == request.DepartmentID,cancellationToken);
+            if (department is null)
+                return new BaseResponse(false, " Department with thar id does not exist");
+            var classe = new Course
             {
-                Name = request.Name,
+                ClassId = request.ClassID,
+                Title = request.Title,                
                 TimeCreated = DateTimeOffset.UtcNow,
                 TimeUpdated = DateTimeOffset.UtcNow,
-                StudentIds = ";",
-                ClassNumber = request.ClassNumber,
+                CourseCode = request.CourseCode,
+                LecturerID = user.Id,
+                Level = request.Level,
+                DepartmentID = request.DepartmentID
             };
             var log = new LogActivity
             {

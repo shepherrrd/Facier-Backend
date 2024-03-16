@@ -3,6 +3,7 @@ using System;
 using AttendanceCapture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AttendanceCapture.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    partial class UniversityContextModelSnapshot : ModelSnapshot
+    [Migration("20240313124035_ClassMigration6")]
+    partial class ClassMigration6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,12 +124,11 @@ namespace AttendanceCapture.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 3L,
                             ClassNumber = "SE400",
                             DepartmentID = 1L,
-                            StudentIds = ";",
-                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7645), new TimeSpan(0, 0, 0, 0, 0)),
-                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7646), new TimeSpan(0, 0, 0, 0, 0))
+                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7182), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7182), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -228,24 +230,24 @@ namespace AttendanceCapture.Migrations
                             Id = 1L,
                             Lecturers = ";1;",
                             Name = "Software Engineering",
-                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7567), new TimeSpan(0, 0, 0, 0, 0)),
-                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7568), new TimeSpan(0, 0, 0, 0, 0))
+                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7081), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7082), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 2L,
                             Lecturers = ";1;",
                             Name = "Computer Science",
-                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7591), new TimeSpan(0, 0, 0, 0, 0)),
-                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7591), new TimeSpan(0, 0, 0, 0, 0))
+                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7113), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7114), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 3L,
                             Lecturers = ";1;",
                             Name = "Computer Technology",
-                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7608), new TimeSpan(0, 0, 0, 0, 0)),
-                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7608), new TimeSpan(0, 0, 0, 0, 0))
+                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7140), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(7141), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -432,7 +434,7 @@ namespace AttendanceCapture.Migrations
                             Id = 1L,
                             AccessFailedCount = 0,
                             AccountStatus = 1,
-                            ConcurrencyStamp = "35e8f857-afd9-4dbc-bf27-8168b4ac5200",
+                            ConcurrencyStamp = "58d24727-4983-4dc0-9f0d-951b7e053bdc",
                             Email = "technology@facifier.com",
                             EmailConfirmed = true,
                             FirstName = "FInalYear",
@@ -440,11 +442,11 @@ namespace AttendanceCapture.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TECHNOLOGY@FACIFIER.COM",
                             NormalizedUserName = "TECHNOLOGY@FACIFIER.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ2UD11rk4dTutUtrtu6IS/eM/t3SyuDVniWkjBx7T2nj+EcZjXpI8n9KCzUejd0yw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH6+GuMwEYy3+M5Yqpd2hFilD0Mnv6FTZqs1a7BruoJtI0A5tJbDEGG7qCg/RhuhTg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0268BCD54A046143B860FB8B89F4B484",
-                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7114), new TimeSpan(0, 0, 0, 0, 0)),
-                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 44, 16, 173, DateTimeKind.Unspecified).AddTicks(7120), new TimeSpan(0, 0, 0, 0, 0)),
+                            SecurityStamp = "DB60B5104AB0984192285030F9D71484",
+                            TimeCreated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(6555), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeUpdated = new DateTimeOffset(new DateTime(2024, 3, 13, 12, 40, 34, 466, DateTimeKind.Unspecified).AddTicks(6561), new TimeSpan(0, 0, 0, 0, 0)),
                             TwoFactorEnabled = false,
                             UserName = "FACIFIER",
                             UserType = 1
