@@ -3,3 +3,4 @@ AttendanceCapture/bin/
 AttendanceCapture/obj/
 AttendanceCapture/appsettings.Development.json
 AttendanceCapture/appsettings.json
+/AttendanceCapture/wwwroot/shape_predictor_68_face_landmarks.dat
