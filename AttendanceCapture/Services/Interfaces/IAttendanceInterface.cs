@@ -1,8 +1,8 @@
 ﻿using AttendanceCapture.Models;
-
+using Emgu.CV;
 namespace AttendanceCapture.Services.Interfaces;
 
 public interface IAttendanceService
 {
-    BaseResponse VerifyImageMatch(string image1, string image2);
+    BaseResponse VerifyImageMatch(Mat image1, Mat image2);
 }

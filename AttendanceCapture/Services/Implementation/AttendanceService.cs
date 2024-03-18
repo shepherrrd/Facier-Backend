@@ -1,6 +1,10 @@
-﻿using AttendanceCapture.Models;
+﻿﻿using AttendanceCapture.Models;
 using AttendanceCapture.Services.Interfaces;
-using OpenCvSharp;
+using Emgu.CV;
+using Emgu.CV.Face;
+using Emgu.CV.Features2D;
+using Emgu.CV.Structure;
+using Emgu.CV.Util;
 
 namespace AttendanceCapture.Services.Implementation;
 
@@ -13,31 +17,35 @@ public class AttendanceService : IAttendanceService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public BaseResponse VerifyImageMatch(string imagePath1, string imagePath2)
+    public BaseResponse VerifyImageMatch(Mat image1, Mat image2)
     {
-        var areImagesSimilar = false;
+        ORB orb = new ORB();
+        BFMatcher matcher = new BFMatcher(DistanceType.Hamming);
 
-        using (var src1 = new Mat(imagePath1, ImreadModes.Grayscale))
-        using (var src2 = new Mat(imagePath2, ImreadModes.Grayscale))
+        VectorOfKeyPoint keypoints1 = new VectorOfKeyPoint();
+        VectorOfKeyPoint keypoints2 = new VectorOfKeyPoint();
+        UMat descriptors1 = new UMat();
+        UMat descriptors2 = new UMat();
+        orb.DetectAndCompute(image1, null, keypoints1, descriptors1, false);
+        orb.DetectAndCompute(image2, null, keypoints2, descriptors2, false);
+        VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch();
+        matcher.KnnMatch(descriptors1, descriptors2, matches, 2);
+
+        double uniqueThreshold = 65; 
+        List<MDMatch[]> goodMatches = new List<MDMatch[]>();
+        for (int i = 0; i < matches.Size; i++)
         {
-            var orb = ORB.Create();
-            var matcher = new BFMatcher(NormTypes.Hamming, true);
-
-            // Detect and compute keypoints and descriptors
-            KeyPoint[] keypoints1, keypoints2;
-            Mat descriptors1 = new Mat();
-            Mat descriptors2 = new Mat();
-            orb.DetectAndCompute(src1, null, out keypoints1, descriptors1);
-            orb.DetectAndCompute(src2, null, out keypoints2, descriptors2);
-
-            // Match descriptors
-            var matches = matcher.Match(descriptors1, descriptors2);
-
-            // Filter matches by distance
-            var goodMatches = matches.Where(m => m.Distance < 30).ToArray(); // Threshold, adjust as needed
-            areImagesSimilar = goodMatches.Length > 10; // Threshold, adjust as needed
+            MDMatch[] matchPair = matches[i].ToArray();
+            if (matchPair.Length == 2 && matchPair[0].Distance < 0.75 * matchPair[1].Distance)
+            {
+                goodMatches.Add(matchPair);
+            }
         }
+        // Define a threshold for the number of good matches
+        bool areImagesSimilar = goodMatches.Count > uniqueThreshold;
+
 
         return new BaseResponse(areImagesSimilar, "Faces Detected");
+
     }
 }
