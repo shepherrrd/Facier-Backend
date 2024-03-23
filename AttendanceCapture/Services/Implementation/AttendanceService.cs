@@ -1,6 +1,7 @@
 ﻿﻿using AttendanceCapture.Models;
 using AttendanceCapture.Services.Interfaces;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Face;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
@@ -18,7 +19,10 @@ public class AttendanceService : IAttendanceService
     }
 
     public BaseResponse VerifyImageMatch(Mat image1, Mat image2)
+        
     {
+        image1.ConvertTo(image1, DepthType.Cv32F);
+        image1.ConvertTo(image2, DepthType.Cv32F);
         ORB orb = new ORB();
         BFMatcher matcher = new BFMatcher(DistanceType.Hamming);
 

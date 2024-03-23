@@ -72,6 +72,7 @@ public class CaptureAttendanceRequestHandler : IRequestHandler<CaptureAttendance
             string tempFilePath = Path.GetTempFileName(); // Create a temporary file
             File.WriteAllBytes(tempFilePath, imageBytes);
             Mat studentimage = CvInvoke.Imread(tempFilePath, ImreadModes.Color);
+           
 
             string tempFilePath2 = Path.GetTempFileName(); // Create a temporary file
 
