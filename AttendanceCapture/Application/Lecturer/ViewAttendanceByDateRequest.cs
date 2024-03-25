@@ -10,6 +10,7 @@ public class ViewAttendanceByDateRequest : IRequest<BaseResponse<IEnumerable<Att
 {
     public Guid SessionKey { get; set; } = default!;
     public DateTime StartDate {  get; set; }
+    public DateTime EndDate {  get; set; }
     public long CourseID { get; set; }
 }
 
@@ -19,6 +20,7 @@ public class ViewAttendanceByDateValidator : AbstractValidator<ViewAttendanceByD
     {
         RuleFor(x => x.SessionKey).NotNull().NotEmpty();
         RuleFor(x => x.StartDate).NotNull().NotEmpty();
+        RuleFor(x => x.EndDate).NotNull().NotEmpty();
 
     }
 }
@@ -47,7 +49,7 @@ public class ViewAttendanceByDateRequestHandler : IRequestHandler<ViewAttendance
                 return new BaseResponse<IEnumerable<Attendance>>(false, "The User tied to this session was not found");
             
             DateTimeOffset startOfToday = request.StartDate.Date; 
-            DateTimeOffset endOfToday = startOfToday.AddDays(1).AddTicks(-1);
+            DateTimeOffset endOfToday = request.EndDate.Date;
             var attendaces = await _context.Attendances.AsNoTracking().Where(x => x.TimeCreated >=startOfToday && x.TimeCreated <= endOfToday
             && x.Course == request.CourseID
             && x.LecturerID == user.Id
