@@ -9,8 +9,8 @@ namespace AttendanceCapture.Application.Lecturer;
 public class ViewAttendanceByDateRequest : IRequest<BaseResponse<IEnumerable<Attendance>>>
 {
     public Guid SessionKey { get; set; } = default!;
-    public DateTime StartDate {  get; set; }
-    public DateTime EndDate {  get; set; }
+    public DateTimeOffset StartDate {  get; set; }
+    public DateTimeOffset EndDate {  get; set; }
     public long CourseID { get; set; }
 }
 
